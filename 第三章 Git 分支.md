@@ -82,6 +82,7 @@ c1c5569 (HEAD -> master, origin/master, testing) 220713:21-21
 
 你的 testing 分支向前移动了，但是 master 分支却没有，它仍然指向运行 git checkout 时所
 
+<<<<<<< HEAD
 指的对象。 这就有意思了，现在我们切换回 master 分支看看：
 
 ` git checkout master`
@@ -197,3 +198,6 @@ Fast-forward: 由于你想要合并的分支 hotfix 所指向的提交 C4 是你
 ## 远程分支
 
 ## 变基
+=======
+指的对象。 这就有意思了，现在我们切换回 master 分支看看：
+>>>>>>> testing
