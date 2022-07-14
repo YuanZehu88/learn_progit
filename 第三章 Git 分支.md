@@ -92,4 +92,108 @@ c1c5569 (HEAD -> master, origin/master, testing) 220713:21-21
 
 这条命令做了两件事。 一是使 HEAD 指回 master 分支，二是将工作目录恢复成 master 分支所指向的快照内容。 也就是说，你现在做修改的话，项目将始于一个较旧的版本。 本质上来讲，这就是忽略 testing 分支所做 的修改，以便于向另一个方向进行开发。
 
-分支切换会改变你工作目录中的文件,在切换分支时，一定要注意你工作目录里的文件会被改变。 如果是切换到一个较旧的分支，你的工作目录会恢复到该分支最后一次提交时的样子。 如果 Git 不能干净利落地完成这个任 务，它将禁止切换分支。
+分支切换会改变你工作目录中的文件,在切换分支时，一定要注意你工作目录里的文件会被改变。 如果是切换到一个较旧的分支，你的工作目录会恢复到该分支最后一次提交时的样子。 如果 Git 不能干净利落地完成这个任 务，它将禁止切换分支。
+
+我们不妨再稍微做些修改并提交：
+
+$ vim test.rb
+
+$ git commit -a -m 'made other changes'
+
+现在，这个项目的提交历史已经产生了分叉（参见 项目分叉历史）。 因为刚才你创建了一个新分支，并切换过去进行了一些工作，随后又切换回 master 分支进行了另外一些工作。 上述两次改动针对的是不同分支：你可以在不同分支间不断地来回切换和工作，并在时机成熟时将它们合并起来。 而所有这些工作，你需要的命令只有branch、checkout 和 commit.
+
+<img src="images\图片24.png" style="zoom:43%;" />
+
+图 17. 项目分叉历史
+
+你可以简单地使用 git log 命令查看分叉历史。 运行 git log --oneline --decorate --graph --all ，它会输出你的提交历史、各个分支的指向以及项目的分支分叉情况。
+
+```
+$ git log --oneline --decorate --graph --all
+* 8e9ab77 (master) bmaster1
+| * cb67859 (HEAD -> testing) testing 2
+| * d2a9f03 submit testing
+|/
+* c1c5569 (origin/master) 220713:21-21
+* 6109401 (tag: v1.4) commit33
+* 3be773e aaa:wq
+* 238f5f4 20220713-10:00
+* 702469f commit3
+* 3c6ad48 c2
+* 1984d6f 2022-07-12-14:23
+* 3246ba2 (tag: v1.2, tag: show) commit1
+```
+
+由于 Git 的分支实质上仅是包含所指对象校验和（长度为 40 的 SHA-1 值字符串）的文件，所以它的创建和销毁都异常高效。 创建一个新分支就相当于往一个文件中写入 41 个字节（40 个字符和 1 个换行符），如此的简单能不快吗？
+
+在 Git 中，任何规模的项目都能在瞬间创建新分支。 同时，由于每次提交都会记录父对 象(上次的提交对象)，所以寻找恰当的合并基础（译注：即共同祖先）也是同样的简单和高效。 这些高效的特性使得 Git 鼓励开发人员频繁地创建和使用分支。
+
+创建新分支的同时切换过去
+
+通常我们会在创建一个新分支后立即切换过去，这可以用 git checkout -b <newbranchname> 一条命令搞定。
+
+## 分支的新建与合并
+
+- git checkout -b issue53
+
+切换分支之前，保持好一个干净的状态。 有一些方法可以绕过这个问题（即，暂存（stashing） 和 修补提交（commit amending））.
+
+git add *
+
+git commit -amend 
+
+git checkout <branch>
+
+---
+
+- git checkout master
+
+ 请牢记：当你切换分支的时候，Git 会重置你的工作目录，使其看起来像回到了你在那个分支上最后一次提交的样子。 Git 会自动添加、删除、修改文件以确保此时你的工作目录和这个分支最后一次提交时的样子一模一样。
+
+---
+
+$ git checkout -b hotfix
+
+$ vim index.html
+
+$ git commit -a -m 'fixed the broken email address'
+
+$ git checkout master
+
+---
+
+```
+Lenovo@LAPTOP-17JBE9VI MINGW64 /D/github_exercise/learn_progit (hotfix)
+$ git checkout master
+Switched to branch 'master'
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Lenovo@LAPTOP-17JBE9VI MINGW64 /D/github_exercise/learn_progit (master)
+$ git merge hotfix
+Updating 8e9ab77..ec094d5
+Fast-forward
+ index.html | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 index.html
+
+Lenovo@LAPTOP-17JBE9VI MINGW64 /D/github_exercise/learn_progit (master)
+```
+
+Fast-forward: 由于你想要合并的分支 hotfix 所指向的提交 C4 是你所在的提交 C2 的直接后继， 因此 Git 会直接将指针向前移动。换句话说，当你试图合并两个分支时， 如果顺着一个分支走下去能够到达另一个分支，那么 Git 在合并两者的时候， 只会简单的将指针向前推进 （指针右移），因为这种情况下的合并操作没有需要解决的分歧——这就叫做 “快进（fast-forward）”。
+
+<img src="D:\github_exercise\learn_progit\images\image-20220714115925844.png" alt="image-20220714115925844" style="zoom: 25%;" />
+
+ git branch -d hotfix
+
+
+
+
+
+## 分支管理
+
+## 分支开发流
+
+## 远程分支
+
+## 变基
