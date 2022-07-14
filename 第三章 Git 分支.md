@@ -76,3 +76,10 @@ c1c5569 (HEAD -> master, origin/master, testing) 220713:21-21
 
 那么，这样的实现方式会给我们带来什么好处呢？ 现在不妨再提交一次：
 
+<img src="images/图片22.png" style="zoom:40%"/>
+
+图15. HEAD 分支随着提交操作自动向前移动
+
+你的 testing 分支向前移动了，但是 master 分支却没有，它仍然指向运行 git checkout 时所
+
+指的对象。 这就有意思了，现在我们切换回 master 分支看看：
