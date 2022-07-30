@@ -10,8 +10,6 @@
 
 > **通信协议**或简称为**传输协议**（**Communications Protocol**）在[电信](https://baike.baidu.com/item/电信)中，是指在任何物理介质中允许两个或多个在[传输系统](https://baike.baidu.com/item/传输系统)中的终端之间传播[信息](https://baike.baidu.com/item/信息)的系统标准，也是指计算机通信或网上设备的共同语言。Git 可以使用四种不同的协议来传输资料。
 
-
-
 ## 本地协议
 
 本地协议（Local protocol）: 其中的远程版本库就是同一主机上的另一个目录。 克隆一个版本库或者增加一个远程到现有的项目中，使用版本库路径作为 URL。
